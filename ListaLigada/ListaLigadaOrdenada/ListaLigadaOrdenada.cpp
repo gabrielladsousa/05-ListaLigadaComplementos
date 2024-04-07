@@ -114,40 +114,117 @@ void exibirElementos()
 
 void inserirElemento()
 {
-	// aloca memoria dinamicamente para o novo elemento
+	int temp; 
+
 	NO* novo = (NO*)malloc(sizeof(NO));
 	if (novo == NULL)
 	{
 		return;
 	}
 
-	cout << "Digite o elemento: ";
+	cout << "Digite o elemento: \n";
 	cin >> novo->valor;
 	novo->prox = NULL;
 
-	if (primeiro == NULL)
-	{
+	if (primeiro == NULL) {
 		primeiro = novo;
 	}
-	else
-	{
-		// procura o final da lista
+	else {
+
 		NO* aux = primeiro;
 		while (aux->prox != NULL) {
+			if (aux->valor == novo->valor) {
+				cout << "O elemento ja existe!\n";
+				free(novo);
+				return;
+			}
 			aux = aux->prox;
 		}
+
+		if (aux->valor == novo->valor) {
+			cout << "O elemento ja existe!\n";
+			free(novo);
+			return;
+		}
+
 		aux->prox = novo;
+
+		NO* atual = primeiro;
+		while (atual->prox != NULL) {
+			NO* proximo = atual->prox;
+			while (proximo != NULL) {
+				if (atual->valor > proximo->valor) {
+					temp = atual->valor;
+					atual->valor = proximo->valor;
+					proximo->valor = temp;
+				}
+				proximo = proximo->prox;
+			}
+			atual = atual->prox;
+		}
 	}
 }
 
 void excluirElemento()
 {
+	int elemento;
 
+	if (primeiro == NULL)
+	{
+		cout << "Lista vazia\n";
+		return;
+	}
+
+	cout << "Qual elemento deseja excluir?\n";
+	cin >> elemento;
+
+	NO* atual = primeiro;
+	NO* anterior = NULL;
+
+	while (atual != NULL && atual->valor < elemento) {
+		anterior = atual;
+		atual = atual->prox;
+	}
+
+	if (atual != NULL && atual->valor == elemento) {
+		if (anterior == NULL) {
+			primeiro = atual->prox;
+		}
+		else {
+			anterior->prox = atual->prox;
+		}
+		cout << "ELEMENTO EXCLUIDO!\n";
+		free(atual);
+	}
+	else {
+		cout << "ELEMENTO NAO ENCONTRADO\n";
+	}
 }
 
 void buscarElemento()
 {
+	int elemento;
 
+	if (primeiro == NULL)
+	{
+		cout << "Lista vazia\n";
+		return;
+	}
+
+	cout << "Qual elemento deseja buscar? \n";
+	cin >> elemento;
+
+	NO* atual = primeiro;
+	while (atual != NULL && atual->valor < elemento){
+		atual = atual->prox;
+	}
+
+	if (atual != NULL && atual->valor == elemento){
+		cout << "ELEMENTO ENCONTRADO!\n";
+	}
+	else{
+		cout << "ELEMENTO NAO ENCONTRADO!\n";
+	}
 }
 
 
